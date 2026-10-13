@@ -1,0 +1,26 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Available Cars{% endblock %}
+{% block content %}
+<h1>Available Cars for Rent</h1>
+{% if cars %}
+<div class="car-grid">
+    {% for car in cars %}
+    <div class="car-card">
+        {% if car.image %}
+        <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}">
+        {% else %}
+        <div class="car-placeholder">No image</div>
+        {% endif %}
+        <div class="car-info">
+            <h2><a href="{% url 'myapp:car_detail' car.pk %}">{{ car.year }} {{ car.make }} {{ car.model }}</a></h2>
+            <p class="color">{{ car.color }}</p>
+            <p class="price">From $20/day</p>
+            <a href="{% url 'myapp:car_detail' car.pk %}" class="btn">View Details</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="no-cars">No cars available at the moment. Check back soon!</p>
+{% endif %}
+{% endblock %}

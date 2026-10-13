@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Manage Rentals{% endblock %}
+{% block content %}
+<div class="admin-page">
+    <div class="admin-header">
+        <h1>Manage Rentals</h1>
+    </div>
+    
+    <table class="admin-table">
+        <thead>
+            <tr><th>ID</th><th>Car</th><th>User</th><th>Renter</th><th>Email</th><th>Dates</th><th>Total</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+            {% for rental in rentals %}
+            <tr>
+                <td>#{{ rental.id }}</td>
+                <td>{{ rental.car }}</td>
+                <td>{{ rental.user|default:"-" }}</td>
+                <td>{{ rental.renter_name }}</td>
+                <td>{{ rental.renter_email }}</td>
+                <td>{{ rental.start_date }} - {{ rental.end_date }}</td>
+                <td>${{ rental.total_price }}</td>
+                <td>{{ rental.created_at|date:"M d, Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">No rentals found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

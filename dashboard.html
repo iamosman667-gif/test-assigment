@@ -1,0 +1,55 @@
+{% extends 'myapp/base.html' %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>My Rentals</h1>
+        <a href="{% url 'myapp:car_list' %}" class="btn btn-secondary">Browse Cars</a>
+    </div>
+    
+    {% if rentals %}
+    <div class="rentals-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Car</th>
+                    <th>Rental Period</th>
+                    <th>Days</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Booked On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rental in rentals %}
+                <tr>
+                    <td>
+                        <strong>{{ rental.car.year }} {{ rental.car.make }} {{ rental.car.model }}</strong><br>
+                        <small>{{ rental.car.color }}</small>
+                    </td>
+                    <td>{{ rental.start_date }} - {{ rental.end_date }}</td>
+                    <td>{{ rental.start_date|timesince:rental.end_date }}</td>
+                    <td class="price">${{ rental.total_price }}</td>
+                    <td>
+                        {% if rental.end_date < today %}
+                        <span class="status completed">Completed</span>
+                        {% elif rental.start_date > today %}
+                        <span class="status upcoming">Upcoming</span>
+                        {% else %}
+                        <span class="status active">Active</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ rental.created_at|date:"M d, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>You haven't booked any cars yet.</p>
+        <a href="{% url 'myapp:car_list' %}" class="btn btn-primary">Browse Cars</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

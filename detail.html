@@ -1,0 +1,43 @@
+{% extends 'myapp/base.html' %}
+{% block title %}{{ car.year }} {{ car.make }} {{ car.model }}{% endblock %}
+{% block content %}
+<div class="car-detail">
+    <div class="car-image">
+        {% if car.image %}
+        <img src="{{ car.image.url }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}">
+        {% else %}
+        <div class="car-placeholder-detail">No image available</div>
+        {% endif %}
+    </div>
+    <div class="car-details">
+        <h1>{{ car.year }} {{ car.make }} {{ car.model }}</h1>
+        <p class="color">{{ car.color }}</p>
+        <div class="pricing-table">
+            <h3>Rental Pricing</h3>
+            <ul>
+                <li>1 day: <strong>$20</strong></li>
+                <li>2 days: <strong>$30</strong></li>
+                <li>3 days: <strong>$35</strong></li>
+                <li>4 days: <strong>$37</strong></li>
+                <li>5 days: <strong>$39</strong></li>
+                <li>6 days: <strong>$41</strong></li>
+                <li>7+ days: <strong>$45</strong> (max)</li>
+            </ul>
+        </div>
+        {% if car.description %}
+        <p class="description">{{ car.description }}</p>
+        {% endif %}
+        {% if car.available %}
+        <h2>Rent This Car</h2>
+        <form method="post" action="{% url 'myapp:rent_car' car.pk %}" class="rent-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Book Now</button>
+        </form>
+        {% else %}
+        <p class="unavailable">This car is currently unavailable.</p>
+        {% endif %}
+        <a href="{% url 'myapp:car_list' %}" class="btn btn-secondary">Back to All Cars</a>
+    </div>
+</div>
+{% endblock %}

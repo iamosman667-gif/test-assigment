@@ -1,0 +1,19 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Rental Confirmed{% endblock %}
+{% block content %}
+<div class="success-page">
+    <div class="success-card">
+        <div class="success-icon">&#10003;</div>
+        <h1>Booking Confirmed!</h1>
+        <p class="success-message">Thank you, {{ rental.renter_name }}. Your rental has been confirmed.</p>
+        <div class="rental-details">
+            <p><strong>Car:</strong> {{ rental.car.year }} {{ rental.car.make }} {{ rental.car.model }}</p>
+            <p><strong>Renter:</strong> {{ rental.renter_name }}</p>
+            <p><strong>Email:</strong> {{ rental.renter_email }}</p>
+            <p><strong>Rental Period:</strong> {{ rental.start_date }} to {{ rental.end_date }}</p>
+            <p><strong>Total Price:</strong> ${{ rental.total_price }}</p>
+        </div>
+        <a href="{% url 'myapp:car_list' %}" class="btn">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

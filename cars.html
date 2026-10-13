@@ -1,0 +1,40 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Manage Cars{% endblock %}
+{% block content %}
+<div class="admin-page">
+    <div class="admin-header">
+        <h1>Manage Cars</h1>
+        <a href="{% url 'myapp:admin_car_add' %}" class="btn btn-primary">Add Car</a>
+    </div>
+    
+    <table class="admin-table">
+        <thead>
+            <tr><th>Image</th><th>Car</th><th>Year</th><th>Color</th><th>Price/Day</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+            <tr>
+                <td>{% if car.image %}<img src="{{ car.image.url }}" alt="" style="width: 60px; height: 40px; object-fit: cover;">{% endif %}</td>
+                <td>{{ car.make }} {{ car.model }}</td>
+                <td>{{ car.year }}</td>
+                <td>{{ car.color }}</td>
+                <td>${{ car.price_per_day }}</td>
+                <td>
+                    {% if car.available %}
+                    <span class="status available">Available</span>
+                    {% else %}
+                    <span class="status unavailable">Unavailable</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'myapp:admin_car_edit' car.pk %}" class="btn btn-sm">Edit</a>
+                    <a href="{% url 'myapp:admin_car_delete' car.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">No cars found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
